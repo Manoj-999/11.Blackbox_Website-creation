@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Booking Website</title>
+	<style>
+		body {
+			background-color: #000;
+			color: #fff;
+		}
+
+		section {
+			padding: 20px;
+			border-bottom: 1px solid #fff;
+		}
+
+		h2 {
+			margin-top: 0;
+		}
+
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		li {
+			margin-bottom: 10px;
+		}
+
+		input[type="radio"], input[type="checkbox"] {
+			margin-right: 10px;
+		}
+
+		label {
+			margin-right: 20px;
+		}
+
+		button[type="submit"] {
+			background-color: #4CAF50;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		button[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<nav>
+		<!-- Menu Options -->
+	</nav>
+
+	<!-- Pizza Options -->
+	<section>
+		<h2>Pizza Options</h2>
+		<ul>
+			<li>
+				<input type="radio" id="pizza1" name="pizza">
+				<label for="pizza1">Pizza 1</label>
+				<span>Price: $10.99</span>
+			</li>
+			<li>
+				<input type="radio" id="pizza2" name="pizza">
+				<label for="pizza2">Pizza 2</label>
+				<span>Price: $12.99</span>
+			</li>
+			<li>
+				<input type="radio" id="pizza3" name="pizza">
+				<label for="pizza3">Pizza 3</label>
+				<span>Price: $14.99</span>
+			</li>
+		</ul>
+	</section>
+
+	<!-- Topping Options -->
+	<section>
+		<h2>Topping Options</h2>
+		<ul>
+			<li>
+				<input type="checkbox" id="topping1" name="topping">
+				<label for="topping1">Topping 1</label>
+				<span>Price: $1.99</span>
+			</li>
+			<li>
+				<input type="checkbox" id="topping2" name="topping">
+				<label for="topping2">Topping 2</label>
+				<span>Price: $2.99</span>
+			</li>
+			<li>
+				<input type="checkbox" id="topping3" name="topping">
+				<label for="topping3">Topping 3</label>
+				<span>Price: $3.99</span>
+			</li>
+		</ul>
+	</section>
+
+	<!-- Delivery Fee -->
+	<section>
+		<h2>Delivery Fee</h2>
+		<p>Delivery Fee: $5.00</p>
+	</section>
+
+	<!-- Payment Information -->
+	<section>
+		<h2>Payment Information</h2>
+		<form>
+			<label for="card-name">Card Name:</label>
+			<input type="text" id="card-name" name="card-name"><br><br>
+			<label for="card-no">Card Number (16 digits):</label>
+			<input type="text" id="card-no" name="card-no"><br><br>
+			<label for="ccv">CCV:</label>
+			<input type="text" id="ccv" name="ccv"><br><br>
+			<label for="expiry-date">Expiry Date:</label>
+			<input type="date" id="expiry-date" name="expiry-date"><br><br>
+			<label for="phone-no">Phone Number:</label>
+			<input type="tel" id="phone-no" name="phone-no"><br><br>
+			<button type="submit">Place Order</button>
+		</form>
+	</section>
+
+	<!-- Order Summary -->
+	<section>
+		<h2>Order Summary</h2>
+		<p id="order-summary"></p>
+	</section>
+
+	<script>
+		// Add event listener to form submission
+		document.querySelector('form').addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			// Get pizza option
+			const pizzaOption = document.querySelector('input[name="pizza"]:checked');
+
+			// Get topping options
+			const toppingOptions = document.querySelectorAll('input[name="topping"]:checked');
+
+			// Calculate total price
+			let totalPrice = 0;
+			if (pizzaOption) {
+				totalPrice += parseFloat(pizzaOption.nextElementSibling.textContent.replace('$', ''));
+			}
+			toppingOptions.forEach((option) => {
+				totalPrice += parseFloat(option.nextElementSibling.textContent.replace('$', ''));
+			});
+			totalPrice += 5.00; // Add delivery fee
+
+			// Add tax
+			const tax = totalPrice * 0.0825;
+			totalPrice += tax;
+
+			// Generate random ETA
+			const eta = Math.floor(Math.random() * 60) + 30;
+
+			// Display order summary
+			document.getElementById('order-summary').textContent = `Order Summary:
+- Pizza: ${pizzaOption.nextElementSibling.textContent}
+- Toppings: ${toppingOptions.length > 0 ? toppingOptions.map((option) => option.nextElementSibling.textContent).join(', ') : 'None'}
+- Delivery Fee: $5.00
+- Tax: $${tax.toFixed(2)}
+- Total: $${totalPrice.toFixed(2)}
+Estimated Delivery Time: ${eta} minutes`;
+
+			// Display final message
+			alert(`Order placed successfully! Your estimated delivery time is ${eta} minutes. Your total price including tax is $${totalPrice.toFixed(2)}.`);
+		});
+	</script>
+</body>
+</html>
